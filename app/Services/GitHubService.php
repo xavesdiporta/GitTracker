@@ -1,0 +1,129 @@
+<?php
+
+// app/Services/GitHubService.php
+
+namespace App\Services;
+
+use App\Models\User;
+use GuzzleHttp\Client;
+
+class GitHubService
+{
+    protected $client;
+
+    public function __construct()
+    {
+        $this->client = new Client([
+            'base_uri' => 'https://api.github.com/',
+            'verify' => 'C:\Projetos\NOOP\Github-manager\cacert.pem', // Certifique-se de que o caminho aqui esteja correto
+        ]);
+    }
+
+    public function getUserData($githubUsername)
+    {
+        $response = $this->client->get("users/{$githubUsername}");
+        return json_decode($response->getBody(), true);
+    }
+
+    // Função para obter dados detalhados dos repositórios públicos
+    public function getPublicReposData($githubUsername)
+    {
+        // Repositórios públicos
+        $response = $this->client->get("users/{$githubUsername}/repos");
+        $reposData = json_decode($response->getBody(), true);
+
+        $repoDetails = [];
+        foreach ($reposData as $repo) {
+            $repoDetails[] = [
+                'name' => $repo['name'],
+                'description' => $repo['description'],
+                'url' => $repo['html_url'],
+                'language' => $repo['language'],
+                'created_at' => $repo['created_at'],
+                'updated_at' => $repo['updated_at'],
+                'stars' => $repo['stargazers_count'],
+                'forks' => $repo['forks_count'],
+            ];
+        }
+
+        return $repoDetails;
+    }
+
+    // Função para obter dados dos repositórios privados (precisa de um token de acesso)
+    public function getPrivateReposData($githubUsername)
+    {
+
+        $repoDetails = "0";
+
+        return $repoDetails;
+    }
+
+    // Função para obter seguidores, seguidos e estrelas
+    public function getFollowersAndStars($githubUsername)
+    {
+        $response = $this->client->get("users/{$githubUsername}");
+        $userData = json_decode($response->getBody(), true);
+
+        return [
+            'stars' => $userData['public_repos'] ?? 0, // Atribuir o número de estrelas de acordo com o perfil
+            'followers' => $userData['followers'] ?? 0,
+            'following' => $userData['following'] ?? 0,
+        ];
+    }
+
+    // Função para obter achievements (se disponíveis)
+    public function getAchievements($githubUsername)
+    {
+        // A API do GitHub não fornece dados específicos de achievements. Aqui você pode adicionar uma lógica para pegar
+        // informações adicionais, se o GitHub fornecer isso no futuro.
+        return [];
+    }
+
+    public function getRepoReadme($githubUsername)
+    {
+        try {
+            $response = $this->client->get("repos/{$githubUsername}/{$githubUsername}/contents/README.md", [
+                'headers' => ['Accept' => 'application/vnd.github.v3.raw'],
+            ]);
+            return (string)$response->getBody();
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    // Função para atualizar o perfil do usuário
+    public function updateProfile(User $user)
+    {
+        $githubData = $this->getUserData($user->profile->github_username);
+        $publicReposData = $this->getPublicReposData($user->profile->github_username);
+        $privateReposData = $this->getPrivateReposData($user->profile->github_username);
+        $followersAndStars = $this->getFollowersAndStars($user->profile->github_username);
+        $achievements = $this->getAchievements($user->profile->github_username);
+
+        // Tentar encontrar um README em um dos repositórios públicos
+        $personalizedBio = null;
+        foreach ($publicReposData as $repo) {
+            if (strtolower($repo['name']) === strtolower($user->profile->github_username)) {
+                $personalizedBio = $this->getRepoReadme($user->profile->github_username);
+                break;
+            }
+        }
+
+        // Atualizando o perfil com todos os dados
+        $user->profile->update(array_merge(
+            [
+                'name' => $githubData['name'] ?? null,
+                'company' => $githubData['company'] ?? null,
+                'location' => $githubData['location'] ?? null,
+                'bio' => $personalizedBio ?? $githubData['bio'] ?? null,
+                'avatar_url' => $githubData['avatar_url'] ?? null, // Adicionando a URL do avatar
+            ],
+            [
+                'public_repos' => $publicReposData,
+                'private_repos' => $privateReposData,
+            ],
+            $followersAndStars,
+            ['achievements' => $achievements]
+        ));
+    }
+}
