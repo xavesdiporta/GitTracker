@@ -28,12 +28,18 @@ class GitHubService
     // Função para obter dados detalhados dos repositórios públicos
     public function getPublicReposData($githubUsername)
     {
+        // Carregar as cores das linguagens do arquivo colors.json
+        $colors = json_decode(file_get_contents(public_path('colors.json')), true);
+
         // Repositórios públicos
         $response = $this->client->get("users/{$githubUsername}/repos");
         $reposData = json_decode($response->getBody(), true);
 
         $repoDetails = [];
         foreach ($reposData as $repo) {
+            $language = $repo['language'] ?? 'Not specified';
+            $colorClass = $colors[$language] ?? 'bg-gray-500'; // Cor da linguagem
+
             $repoDetails[] = [
                 'name' => $repo['name'],
                 'description' => $repo['description'],
@@ -43,6 +49,8 @@ class GitHubService
                 'updated_at' => $repo['updated_at'],
                 'stars' => $repo['stargazers_count'],
                 'forks' => $repo['forks_count'],
+                'visibility' => $repo['visibility'] ?? 'public',
+                'colorClass' => $colorClass,  // Passando a classe de cor
             ];
         }
 
@@ -109,6 +117,14 @@ class GitHubService
             }
         }
 
+        // Criar o campo bioprofile com as informações adicionais
+        $bioProfile = [
+            'pronouns' => $githubData['pronouns'] ?? null, // Aqui você pode adicionar lógica para pegar pronomes
+            'country' => $githubData['location'] ?? null,
+            'company' => $githubData['company'] ?? null,
+            'social_accounts' => $githubData['blog'] ?? null, // Blog ou outras contas sociais
+        ];
+
         // Atualizando o perfil com todos os dados
         $user->profile->update(array_merge(
             [
@@ -117,6 +133,7 @@ class GitHubService
                 'location' => $githubData['location'] ?? null,
                 'bio' => $personalizedBio ?? $githubData['bio'] ?? null,
                 'avatar_url' => $githubData['avatar_url'] ?? null, // Adicionando a URL do avatar
+                'bioprofile' => json_encode($bioProfile), // Salvando o campo bioprofile como JSON
             ],
             [
                 'public_repos' => $publicReposData,

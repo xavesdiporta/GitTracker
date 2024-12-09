@@ -9,6 +9,7 @@ use App\Http\Controllers\OgImageController;
 use App\Http\Controllers\Payments\LemonSqueezyController;
 use App\Http\Controllers\Payments\PaddleController;
 use App\Http\Controllers\Payments\StripeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\Subscribed;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+    Route::get('/search/results', [SearchController::class, 'search'])->name('search.perform');
 
     // Stripe Routes
     Route::prefix('stripe')->name('stripe.')->group(function () {
