@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('logo.ico') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -84,13 +85,13 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const rainContainer = document.getElementById('rain');
                 const icons = ['🔍', '🐙']; // Ícones para a chuva (lupa e símbolo do GitHub)
-                const numIcons = 30; // Número de ícones na chuva
+                const numIcons = 40; // Número de ícones na chuva
 
                 for (let i = 0; i < numIcons; i++) {
                     const icon = document.createElement('div');
                     const randomIcon = icons[Math.floor(Math.random() * icons.length)];
                     const randomPositionX = Math.random() * 100; // Posição horizontal aleatória
-                    const randomDelay = Math.random() * 2; // Atraso na animação
+                    const randomDelay = Math.random() * 3; // Atraso na animação
                     const randomSize = Math.random() * (3 - 1) + 1; // Tamanho do ícone aleatório
 
                     icon.classList.add('rain-icon');

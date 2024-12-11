@@ -44,13 +44,13 @@ class GitHubService
                 'name' => $repo['name'],
                 'description' => $repo['description'],
                 'url' => $repo['html_url'],
-                'language' => $repo['language'],
                 'created_at' => $repo['created_at'],
                 'updated_at' => $repo['updated_at'],
                 'stars' => $repo['stargazers_count'],
                 'forks' => $repo['forks_count'],
                 'visibility' => $repo['visibility'] ?? 'public',
                 'colorClass' => $colorClass,  // Passando a classe de cor
+                'downloadlink' => $repo['downloads_url'] ?? null,
             ];
         }
 
@@ -131,9 +131,10 @@ class GitHubService
                 'name' => $githubData['name'] ?? null,
                 'company' => $githubData['company'] ?? null,
                 'location' => $githubData['location'] ?? null,
-                'bio' => $personalizedBio ?? $githubData['bio'] ?? null,
+                'bio' => $personalizedBio ?? null,
                 'avatar_url' => $githubData['avatar_url'] ?? null, // Adicionando a URL do avatar
                 'bioprofile' => json_encode($bioProfile), // Salvando o campo bioprofile como JSON
+                'bioo' => $githubData['bio'] ?? null,
             ],
             [
                 'public_repos' => $publicReposData,
