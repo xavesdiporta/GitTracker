@@ -8,10 +8,8 @@ WORKDIR /var/www/html
 COPY . /var/www/html
 
 # Install any needed packages
-RUN apt-get update -y && \
-    apt-get install -y \
-    libzip-dev \
-    && docker-php-ext-install mysqli
+RUN composer install --no-dev --optimize-autoloader
+
     # Add any required packages here
 
 # Make port 80 available to the world outside this container
