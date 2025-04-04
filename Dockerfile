@@ -1,35 +1,24 @@
-# Imagem base do PHP com Apache
-FROM php:8.1-apache
+# Use an official PHP runtime as a parent image
+FROM php:7.4-apache
 
-# Instala extensões PHP necessárias para Laravel
-RUN apt-get update && apt-get install -y \
-    libzip-dev zip unzip git curl libpng-dev libonig-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip
-
-# Ativa mod_rewrite
-RUN a2enmod rewrite
-
-# Define o diretório de trabalho
+# Set the working directory to /var/www/html
 WORKDIR /var/www/html
 
-# Copia os arquivos do projeto Laravel
-COPY . .
+# Copy the current directory contents into the container at /var/www/html
+COPY . /var/www/html
 
-# Ajusta o DocumentRoot para apontar para /public
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+# Install any needed packages
+RUN apt-get update -y && \
+    apt-get install -y \
+    libzip-dev \
+    && docker-php-ext-install mysqli
+    # Add any required packages here
 
-# Permissões para storage e cache
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Make port 80 available to the world outside this container
+EXPOSE 5000
 
-# Instala o Composer (diretamente da imagem oficial)
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Define environment variable
+ENV NAME World
 
-# Instala dependências do Laravel
-RUN composer install --no-dev --optimize-autoloader
-
-# Expõe a porta padrão
-EXPOSE 80
-
-# Comando final: prepara ambiente e inicia o Apache
-CMD ["sh", "-c", "cp .env.example .env && php artisan key:generate && apache2-foreground"]
+# Run app.php when the container launches
+CMD ["php", "-S", "0.0.0.0:5000"]
