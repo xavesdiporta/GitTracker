@@ -16,7 +16,6 @@
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.9",
-        "lemonsqueezy/laravel": "^1.5",
         "livewire/livewire": "^3.0",
         "sentry/sentry-laravel": "^4.4",
         "spatie/browsershot": "^4.0",
