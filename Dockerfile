@@ -1,41 +1,24 @@
-# Imagem base com PHP e Apache
-FROM php:8.2-apache
+# Use an official PHP runtime as a parent image
+FROM php:7.4-apache
 
-# Instala extensões PHP necessárias
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    git \
-    curl \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Set the working directory to /var/www/html
+WORKDIR /var/www/html
 
-# Instala o Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Ativa mod_rewrite do Apache
-RUN a2enmod rewrite
-
-# Copia os arquivos do projeto
+# Copy the current directory contents into the container at /var/www/html
 COPY . /var/www/html
 
-# Define permissões e diretório de trabalho
-WORKDIR /var/www/html
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+# Install any needed packages
+RUN apt-get update -y && \
+    apt-get install -y \
+    libzip-dev \
+    && docker-php-ext-install mysqli
+    # Add any required packages here
 
-# Instala dependências do Laravel
-RUN composer install --no-dev --optimize-autoloader \
-    && cp .env.example .env \
-    && php artisan key:generate \
-    && php artisan config:clear \
-    && php artisan route:clear \
-    && php artisan view:clear
+# Make port 80 available to the world outside this container
+EXPOSE 5000
 
-# Expõe a porta 80
-EXPOSE 80
+# Define environment variable
+ENV NAME World
 
-# Comando de inicialização
-CMD php artisan migrate --force && apache2-foreground
+# Run app.php when the container launches
+CMD ["php", "-S", "0.0.0.0:5000"]
