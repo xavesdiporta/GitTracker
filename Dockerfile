@@ -17,8 +17,8 @@ RUN a2enmod rewrite
 # Define diretório de trabalho
 WORKDIR /var/www/html
 
-# Copia arquivos da aplicação
-COPY . /var/www/html
+# Copia os arquivos da app Laravel
+COPY . .
 
 # Corrige DocumentRoot para /public
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
@@ -30,11 +30,11 @@ RUN chown -R www-data:www-data /var/www/html \
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Instala dependências PHP (sem executar Artisan ainda!)
+# Agora sim: instala dependências
 RUN composer install --no-dev --optimize-autoloader
 
-# Expondo a porta 80
+# Expondo porta 80
 EXPOSE 80
 
-# Comando de inicialização
+# Comando ao iniciar container
 CMD ["sh", "-c", "cp .env.example .env && php artisan key:generate && php artisan migrate --force && apache2-foreground"]
