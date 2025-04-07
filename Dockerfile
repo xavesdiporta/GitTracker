@@ -19,4 +19,4 @@ COPY . /var/www/html
 EXPOSE 5000
 
    # Comando padrão ao iniciar o container
-CMD ["php", "-S", "0.0.0.0:5000"]
+CMD ["php", "-S", "0.0.0.0:5000", "-t", "public"]
