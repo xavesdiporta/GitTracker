@@ -4,8 +4,6 @@ FROM php:7.4-apache
 # Define o diretório de trabalho no container
 WORKDIR /var/www/html
 
-# Copia apenas os arquivos essenciais para o Composer
-COPY composer.json /var/www/html/
 # Instala dependências do sistema necessárias e o Composer
 RUN apt-get update -y && \
        apt-get install -y --no-install-recommends \
@@ -13,9 +11,6 @@ RUN apt-get update -y && \
        docker-php-ext-install mysqli && \
        # Baixar e instalar o Composer
        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
- \
-# Instala as dependências do projeto antes de copiar todo o restante
-RUN /usr/local/bin/composer install --no-dev --optimize-autoloader
 
    # Copia os arquivos restantes do projeto
 COPY . /var/www/html
