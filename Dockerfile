@@ -1,22 +1,25 @@
-# Use an official PHP runtime as a parent image
+# Use uma imagem oficial PHP com Apache
 FROM php:7.4-apache
 
-# Set the working directory to /var/www/html
+# Define o diretório de trabalho no container
 WORKDIR /var/www/html
 
-# Copy the current directory contents into the container at /var/www/html
+# Copia os arquivos para o container
 COPY . /var/www/html
 
-# Install any needed packages
-RUN composer install --no-dev --optimize-autoloader
+# Instala dependências do sistema necessárias e o Composer
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+    libzip-dev unzip && \
+    docker-php-ext-install mysqli && \
+    # Baixar e instalar o Composer
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-    # Add any required packages here
+# Instala as dependências do projeto (usando o Composer) apontando o caminho certo
+RUN /usr/local/bin/composer install --no-dev --optimize-autoloader
 
-# Make port 80 available to the world outside this container
+# Expõe a porta 5000, caso necessário
 EXPOSE 5000
 
-# Define environment variable
-ENV NAME World
-
-# Run app.php when the container launches
+# Comando padrão ao iniciar o container
 CMD ["php", "-S", "0.0.0.0:5000"]
