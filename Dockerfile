@@ -5,8 +5,7 @@ FROM php:7.4-apache
 WORKDIR /var/www/html
 
 # Copia apenas os arquivos essenciais para o Composer
-COPY composer.json composer.lock /var/www/html/
-
+COPY composer.json /var/www/html/
 # Instala dependências do sistema necessárias e o Composer
 RUN apt-get update -y && \
        apt-get install -y --no-install-recommends \
