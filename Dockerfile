@@ -47,5 +47,8 @@ RUN chmod -R 775 storage bootstrap/cache && \
 # Expõe a porta 5000 (caso seja necessário)
 EXPOSE 5000
 
+RUN touch /var/www/html/database/database.sqlite && \
+    chown -R www-data:www-data /var/www/html/database
+
 # Define o comando padrão ao iniciar o container
 CMD ["php", "-S", "0.0.0.0:5000", "-t", "public"]
