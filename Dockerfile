@@ -13,23 +13,27 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libxml2-dev \
     libjpeg-dev \
     libpng-dev \
-    libfreetype6-dev && \
-    docker-php-ext-configure intl && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install \
+    libfreetype6-dev \
+    libpq-dev \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
         gd \
         intl \
         mbstring \
         exif \
         bcmath \
         zip \
-        pcntl && \
-    docker-php-ext-enable \
+        pcntl \
+        pdo \
+        pdo_pgsql \
+    && docker-php-ext-enable \
         exif \
         intl \
         bcmath \
-        zip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+        zip \
+        pdo_pgsql \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Instala o Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -46,9 +50,6 @@ RUN chmod -R 775 storage bootstrap/cache && \
 
 # Expõe a porta 5000 (caso seja necessário)
 EXPOSE 5000
-
-RUN touch /var/www/html/database/database.sqlite && \
-    chown -R www-data:www-data /var/www/html/database
 
 # Define o comando padrão ao iniciar o container
 CMD ["php", "-S", "0.0.0.0:5000", "-t", "public"]
