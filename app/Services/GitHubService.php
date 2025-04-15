@@ -28,7 +28,7 @@ class GitHubService
     public function getPublicReposData($githubUsername)
     {
         // Carregar as cores das linguagens do arquivo colors.json
-        $colors = json_decode(file_get_contents(public_path('colors.json')), true);
+        $colors = json_decode(file_get_contents(public_path('/../colors.json')), true);
 
         // Repositórios públicos
         $response = $this->client->get("users/{$githubUsername}/repos");
