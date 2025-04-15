@@ -1,10 +1,10 @@
-# Use uma imagem oficial do PHP 8.3 com Apache
+# Usa imagem oficial do PHP 8.3 com Apache
 FROM php:8.3-apache
 
-# Configure o diretório de trabalho no container
+# Define diretório de trabalho
 WORKDIR /var/www/html
 
-# Instala dependências necessárias do sistema e extensões do PHP
+# Instala dependências do sistema e extensões do PHP
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libzip-dev \
     unzip \
@@ -15,6 +15,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libpng-dev \
     libfreetype6-dev \
     libpq-dev \
+    curl \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
@@ -35,21 +36,28 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
         pdo_pgsql \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Instala o Composer
+# Instala Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Copie os arquivos do projeto para o container
+# Instala Node.js e npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
+# Copia todos os arquivos do projeto para dentro do container
 COPY . /var/www/html
 
-# Instala as dependências do Laravel com Composer
+# Instala dependências PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Ajusta permissões para diretórios necessários
+# Instala dependências do Node.js e builda o Vite
+RUN npm install && npm run build
+
+# Ajusta permissões
 RUN chmod -R 775 storage bootstrap/cache && \
     chown -R www-data:www-data /var/www/html
 
-# Expõe a porta 5000 (caso seja necessário)
+# Expõe a porta 5000
 EXPOSE 5000
 
-# Define o comando padrão ao iniciar o container
+# Define o comando default
 CMD ["php", "-S", "0.0.0.0:5000", "-t", "public"]
