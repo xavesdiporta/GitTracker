@@ -15,23 +15,15 @@
                                     <p class="text-md text-gray-400 dark:text-gray-200">{{ auth()->user()->profile->bioo ?? 'N/A' }}</p>
                                 </div>
                                 <div class="mt-4 text-left space-x-2 flex">
-                                    <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                                    </svg>
                                     <p class="text-sm text-gray-600 dark:text-gray-400"><strong>Followers:</strong> {{ auth()->user()->profile->followers ?? 'N/A' }}</p>
                                     <p class="text-sm text-gray-600 dark:text-gray-400"><strong>Following:</strong> {{ auth()->user()->profile->following ?? 'N/A' }}</p>
                                 </div>
                                 <div class="flex space-x-2 mt-2">
-                                    <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z"/>
-                                    </svg>
+
                                     <p class="text-sm text-gray-600 dark:text-gray-400"> {{ auth()->user()->profile->company ?? 'N/A' }}</p>
                                 </div>
                                 <div class="flex space-x-2 mt-2">
-                                    <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
-                                    </svg>
+
                                     <p class="text-sm text-gray-600 dark:text-gray-400"> {{ auth()->user()->profile->location ?? 'N/A' }}</p>
                                 </div>
                             </div>
