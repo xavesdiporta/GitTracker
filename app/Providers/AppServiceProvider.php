@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,7 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
-
-        // View::share(['schema' => ['organization' => app(SchemaOrg::class)->organization()]]);
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
