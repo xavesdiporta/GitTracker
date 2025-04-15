@@ -28,7 +28,7 @@ class GitHubService
     public function getPublicReposData($githubUsername)
     {
         // Carregar as cores das linguagens do arquivo colors.json
-        $colors = json_decode(file_get_contents(public_path('/colors.json')), true);
+        //$colors = json_decode(file_get_contents(public_path('/colors.json')), true);
 
         // Repositórios públicos
         $response = $this->client->get("users/{$githubUsername}/repos");
@@ -37,7 +37,7 @@ class GitHubService
         $repoDetails = [];
         foreach ($reposData as $repo) {
             $language = $repo['language'] ?? 'Not specified';
-            $colorClass = $colors[$language] ?? 'bg-gray-500'; // Cor da linguagem
+            //$colorClass = $colors[$language] ?? 'bg-gray-500'; // Cor da linguagem
 
             $repoDetails[] = [
                 'name' => $repo['name'],
@@ -48,7 +48,7 @@ class GitHubService
                 'stars' => $repo['stargazers_count'],
                 'forks' => $repo['forks_count'],
                 'visibility' => $repo['visibility'] ?? 'public',
-                'colorClass' => $colorClass,  // Passando a classe de cor
+                //'colorClass' => $colorClass,  // Passando a classe de cor
                 'downloadlink' => $repo['downloads_url'] ?? null,
             ];
         }
