@@ -15,7 +15,7 @@ class GitHubService
     {
         $this->client = new Client([
             'base_uri' => 'https://api.github.com/',
-            'verify' => 'C:\Projetos\NOOP\Github-manager\cacert.pem', // Certifique-se de que o caminho aqui esteja correto
+            'verify' => '\var\www\html\cacert.pem', // Certifique-se de que o caminho aqui esteja correto
         ]);
     }
 
