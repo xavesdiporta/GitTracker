@@ -78,7 +78,6 @@
 
                                     <!-- Linguagem, Forks e Última atualização -->
                                     <div class="flex flex-wrap text-sm text-gray-500 dark:text-gray-300">
-                                        <span class="w-3 h-3 mr-1 mt-0.5 rounded-full" style="background-color: {{ $repo['colorClass'] }}"></span>
                                         <p>{{ $repo['language'] ?? 'Not specified' }}</p>
                                         <p class="text-xs ml-6 mt-0.5 text-gray-500 dark:text-gray-300"><strong>Last updated:</strong> {{ \Carbon\Carbon::parse($repo['updated_at'])->diffForHumans() }}</p>
                                     </div>
