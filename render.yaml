@@ -1,0 +1,148 @@
+# Exported from Render on 2025-04-16T08:51:46Z
+services:
+- type: web
+  name: GitTrack
+  runtime: docker
+  repo: https://github.com/xavesdiporta/GitTracker
+  plan: starter
+  envVars:
+  - key: APP_ENV
+    sync: false
+  - key: VITE_DEV_SERVER_URL
+    sync: false
+  - key: VITE_APP_NAME
+    sync: false
+  - key: SESSION_PATH
+    sync: false
+  - key: SESSION_LIFETIME
+    sync: false
+  - key: SESSION_ENCRYPT
+    sync: false
+  - key: MEMCACHED_HOST
+    sync: false
+  - key: MAIL_USERNAME
+    sync: false
+  - key: MAIL_HOST
+    sync: false
+  - key: MAIL_FROM_NAME
+    sync: false
+  - key: MAIL_FROM_ADDRESS
+    sync: false
+  - key: MAIL_ENCRYPTION
+    sync: false
+  - key: LOG_STACK
+    sync: false
+  - key: LOG_LEVEL
+    sync: false
+  - key: LOG_DEPRECATIONS_CHANNEL
+    sync: false
+  - key: LOG_CHANNEL
+    sync: false
+  - key: LEMON_SQUEEZY_STORE
+    sync: false
+  - key: LEMON_SQUEEZY_SIGNING_SECRET
+    sync: false
+  - key: LEMON_SQUEEZY_API_KEY
+    sync: false
+  - key: GOOGLE_CLIENT_SECRET
+    sync: false
+  - key: GOOGLE_CLIENT_ID
+    sync: false
+  - key: GITHUB_CLIENT_SECRET
+    sync: false
+  - key: GITHUB_CLIENT_ID
+    sync: false
+  - key: FILESYSTEM_DISK
+    sync: false
+  - key: DB_USERNAME
+    sync: false
+  - key: DB_PORT
+    sync: false
+  - key: DB_PASSWORD
+    sync: false
+  - key: DB_HOST
+    sync: false
+  - key: DB_CONNECTION
+    sync: false
+  - key: CASHIER_CURRENCY
+    sync: false
+  - key: CACHE_STORE
+    sync: false
+  - key: CACHE_PREFIX
+    sync: false
+  - key: BROADCAST_CONNECTION
+    sync: false
+  - key: BCRYPT_ROUNDS
+    sync: false
+  - key: AWS_USE_PATH_STYLE_ENDPOINT
+    sync: false
+  - key: AWS_SECRET_ACCESS_KEY
+    sync: false
+  - key: AWS_DEFAULT_REGION
+    sync: false
+  - key: AWS_BUCKET
+    sync: false
+  - key: APP_URL
+    sync: false
+  - key: APP_TIMEZONE
+    sync: false
+  - key: APP_NAME
+    sync: false
+  - key: APP_MAINTENANCE_STORE
+    sync: false
+  - key: APP_MAINTENANCE_DRIVER
+    sync: false
+  - key: APP_LOCALE
+    sync: false
+  - key: APP_KEY
+    sync: false
+  - key: APP_FALLBACK_LOCALE
+    sync: false
+  - key: LIVEWIRE_ASSET_URL
+    sync: false
+  - key: DB_DATABASE
+    sync: false
+  - key: TWITTER_CLIENT_SECRET
+    sync: false
+  - key: TWITTER_CLIENT_ID
+    sync: false
+  - key: OPENAI_KEY
+    sync: false
+  - key: STRIPE_TRIAL_PERIOD_DAYS
+    sync: false
+  - key: STRIPE_WEBHOOK_SECRET
+    sync: false
+  - key: STRIPE_SECRET
+    sync: false
+  - key: STRIPE_KEY
+    sync: false
+  - key: AWS_ACCESS_KEY_ID
+    sync: false
+  - key: MAIL_PASSWORD
+    sync: false
+  - key: MAIL_PORT
+    sync: false
+  - key: MAIL_MAILER
+    sync: false
+  - key: REDIS_PORT
+    sync: false
+  - key: REDIS_PASSWORD
+    sync: false
+  - key: REDIS_HOST
+    sync: false
+  - key: REDIS_CLIENT
+    sync: false
+  - key: QUEUE_CONNECTION
+    sync: false
+  - key: SESSION_DOMAIN
+    sync: false
+  - key: SESSION_DRIVER
+    sync: false
+  - key: APP_FAKER_LOCALE
+    sync: false
+  - key: APP_DEBUG
+    sync: false
+  region: frankfurt
+  dockerContext: .
+  dockerfilePath: ./Dockerfile
+version: "1"
